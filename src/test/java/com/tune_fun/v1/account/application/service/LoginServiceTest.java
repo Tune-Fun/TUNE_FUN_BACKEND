@@ -83,7 +83,7 @@ class LoginServiceTest {
         // when
         Optional<RegisteredAccount> thenReturnAccount =
                 Optional.of(new RegisteredAccount(1L, "username", "password", "nickname",
-                        "email", Set.of("ROLE_NORMAL"), List.of()));
+                        "email", "profileImageUrl", Set.of("ROLE_NORMAL"), List.of()));
         when(loadAccountPort.registeredAccountInfoByUsername(command.username())).thenReturn(thenReturnAccount);
         when(passwordEncoder.matches(command.password(), "password")).thenReturn(false);
 

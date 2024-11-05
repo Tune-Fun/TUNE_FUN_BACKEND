@@ -7,6 +7,12 @@
 
 operation::register-success[snippets='http-request,http-response,request-fields,response-fields']
 
+=== 계정 해지 API
+
+==== 성공
+
+operation::cancel-account-success[snippets='http-request,http-response,request-fields,response-fields']
+
 === 로그인 API
 
 ==== 성공

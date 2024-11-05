@@ -9,7 +9,6 @@ import com.tune_fun.v1.interaction.adapter.output.persistence.VotePaperLikeJpaEn
 import com.tune_fun.v1.interaction.adapter.output.persistence.VotePaperLikeRepository;
 import com.tune_fun.v1.interaction.application.port.output.DeleteLikePort;
 import com.tune_fun.v1.interaction.application.port.output.LoadLikePort;
-import com.tune_fun.v1.interaction.application.port.output.LoadVotePaperVoteCountPort;
 import com.tune_fun.v1.interaction.application.port.output.SaveLikePort;
 import com.tune_fun.v1.vote.application.port.output.*;
 import com.tune_fun.v1.vote.domain.behavior.SaveVoteChoice;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.ScrollPosition;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Window;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -29,7 +27,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.tune_fun.v1.common.constant.Constants.DOUBLE_COLON;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.toSet;
 import static org.springframework.data.domain.ScrollPosition.forward;
@@ -91,7 +88,6 @@ public class VotePersistenceAdapter implements
      * @param lastId   해당 페이지의 마지막 인덱스
      * @param sortType 정렬 방식
      * @param nickname 작성자 닉네임
-     *
      * @return {@link org.springframework.data.domain.Window} of {@link com.tune_fun.v1.vote.domain.value.ScrollableVotePaper}
      * @see <a href="https://github.com/spring-projects/spring-data-jpa/issues/2996">Keyset-scrolling queries add identifier columns twice when Sort already sorts by Id</a>
      * @see <a href="https://www.baeldung.com/spring-data-jpa-scroll-api">Spring Data JPA Scroll API</a><br>
@@ -100,8 +96,9 @@ public class VotePersistenceAdapter implements
     public Window<ScrollableVotePaper> scrollVotePaper(final Integer lastId, final String sortType, final String nickname) {
         KeysetScrollPosition position;
 
-        if (lastId == null || lastId == 0)
+        if (lastId == null || lastId == 0) {
             position = ScrollPosition.keyset();
+        }
 
         position = forward(Map.of("id", lastId, "voteEndAt", Constants.LOCAL_DATE_TIME_MIN));
 
@@ -120,6 +117,13 @@ public class VotePersistenceAdapter implements
     @Override
     public Optional<RegisteredVotePaper> loadRegisteredVotePaper(final String username) {
         return findProgressingVotePaperByAuthor(username).map(votePaperMapper::registeredVotePaper);
+    }
+
+    @Override
+    public List<RegisteredVotePaper> loadRegisteredVotePapers(String username) {
+        return findVotePapersByUsername(username).stream()
+                .map(votePaperMapper::registeredVotePaper)
+                .toList();
     }
 
     @Override
@@ -144,6 +148,14 @@ public class VotePersistenceAdapter implements
                     votePaper.disable();
                     votePaperRepository.save(votePaper);
                 });
+    }
+
+    @Override
+    public void disableVotePapers(final List<Long> votePaperIds) {
+        List<VotePaperJpaEntity> votePaperJpaEntities = votePaperRepository.findAllById(votePaperIds);
+        votePaperJpaEntities.forEach(VotePaperJpaEntity::disable);
+
+        votePaperRepository.saveAll(votePaperJpaEntities);
     }
 
     @Override
@@ -256,6 +268,10 @@ public class VotePersistenceAdapter implements
 
     public Optional<VotePaperJpaEntity> findProgressingVotePaperByAuthor(final String username) {
         return votePaperRepository.findByVoteEndAtAfterAndAuthorUsernameAndEnabledTrue(now(), username);
+    }
+
+    public List<VotePaperJpaEntity> findVotePapersByUsername(final String username) {
+        return votePaperRepository.findAllByAuthorUsernameAndEnabledTrue(username);
     }
 
     public Optional<VotePaperJpaEntity> findProgressingVotePaperById(final Long id) {

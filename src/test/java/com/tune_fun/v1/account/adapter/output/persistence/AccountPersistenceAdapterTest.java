@@ -226,7 +226,7 @@ class AccountPersistenceAdapterTest {
                 .thenReturn(ofResult);
         HashSet<String> roles = new HashSet<>();
         when(accountMapper.registeredAccountInfo(Mockito.<AccountJpaEntity>any()))
-                .thenReturn(new RegisteredAccount(1L, "janedoe", "iloveyou", "a@a.com", "janedoe", roles, new ArrayList<>()));
+                .thenReturn(new RegisteredAccount(1L, "janedoe", "iloveyou", "a@a.com", "janedoe", "profileImageUrl", roles, new ArrayList<>()));
 
         // Act
         accountPersistenceAdapter.registeredAccountInfoByUsername("janedoe");
@@ -248,7 +248,7 @@ class AccountPersistenceAdapterTest {
                 .thenReturn(ofResult);
         HashSet<String> roles = new HashSet<>();
         when(accountMapper.registeredAccountInfo(Mockito.<AccountJpaEntity>any()))
-                .thenReturn(new RegisteredAccount(1L, "janedoe", "iloveyou", "a@a.com", "janedoe", roles, new ArrayList<>()));
+                .thenReturn(new RegisteredAccount(1L, "janedoe", "iloveyou", "a@a.com", "janedoe", "profileImageUrl", roles, new ArrayList<>()));
 
         // Act
         accountPersistenceAdapter.registeredAccountInfoByEmail("jane.doe@example.org");
@@ -270,7 +270,7 @@ class AccountPersistenceAdapterTest {
                 .thenReturn(ofResult);
         HashSet<String> roles = new HashSet<>();
         when(accountMapper.registeredAccountInfo(Mockito.<AccountJpaEntity>any()))
-                .thenReturn(new RegisteredAccount(1L, "janedoe", "iloveyou", "a@a.com", "janedoe", roles, new ArrayList<>()));
+                .thenReturn(new RegisteredAccount(1L, "janedoe", "iloveyou", "a@a.com", "janedoe", "profileImageUrl", roles, new ArrayList<>()));
 
         // Act
         accountPersistenceAdapter.registeredAccountInfoByNickname("Nickname");

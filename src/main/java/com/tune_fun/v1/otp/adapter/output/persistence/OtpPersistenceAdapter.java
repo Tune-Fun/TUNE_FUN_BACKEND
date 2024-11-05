@@ -79,7 +79,12 @@ public class OtpPersistenceAdapter implements SaveOtpPort, LoadOtpPort, VerifyOt
 
         if (!checkMatchValue(verifyOtp.otp(), otpRedisEntity))
             throw CommonApplicationException.EXCEPTION_OTP_NOT_MATCH;
+    }
 
+    @Override
+    public void verifyOtpAndExpire(VerifyOtp verifyOtp) throws Exception {
+        verifyOtp(verifyOtp);
+        String otpKey = setOtpKey(verifyOtp.otpType(), verifyOtp.username());
         expire(otpKey);
     }
 

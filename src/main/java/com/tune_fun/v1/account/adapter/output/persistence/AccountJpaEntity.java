@@ -133,4 +133,8 @@ public class AccountJpaEntity extends BaseEntity implements UserDetails {
         return !accountNonExpired && !accountNonLocked && !credentialsNonExpired && !enabled;
     }
 
+    public void disable() {
+        enabled = false;
+        withdrawalAt = LocalDateTime.now();
+    }
 }

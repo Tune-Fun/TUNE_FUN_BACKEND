@@ -30,6 +30,7 @@ public class Uris {
     public static final String FIND_USERNAME = API_V1_ROOT + "/find-username";
     public static final String REGISTER = API_V1_ROOT + "/register";
     public static final String LOGIN = API_V1_ROOT + "/login";
+    public static final String CANCEL_ACCOUNT = API_V1_ROOT + "/account-cancellation";
     public static final String OAUTH2_AUTHORIZATION_ROOT = "/oauth2/authorization";
     public static final String OAUTH2_GOOGLE_ROOT = OAUTH2_AUTHORIZATION_ROOT + "/google";
     public static final String OAUTH2_APPLE_ROOT = OAUTH2_AUTHORIZATION_ROOT + "/apple";

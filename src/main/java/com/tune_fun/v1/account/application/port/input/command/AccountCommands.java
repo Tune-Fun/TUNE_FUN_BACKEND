@@ -76,4 +76,7 @@ public class AccountCommands {
     public record SaveEmail(@NotBlank(message = "{email.not_blank}") String email) {
     }
 
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public record CancelAccount(@NotBlank(message = "{otp.not_blank}") String otp) {
+    }
 }

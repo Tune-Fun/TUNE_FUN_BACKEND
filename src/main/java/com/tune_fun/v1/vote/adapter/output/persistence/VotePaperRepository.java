@@ -1,13 +1,13 @@
 package com.tune_fun.v1.vote.adapter.output.persistence;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Window;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 public interface VotePaperRepository extends JpaRepository<VotePaperJpaEntity, Long>, VotePaperCustomRepository {
 
@@ -25,4 +25,6 @@ public interface VotePaperRepository extends JpaRepository<VotePaperJpaEntity, L
     @EntityGraph(attributePaths = {"author"})
     Window<VotePaperJpaEntity> findFirst10ByEnabledTrue(KeysetScrollPosition position, Sort sort);
 
+    @EntityGraph(attributePaths = {"author"})
+    List<VotePaperJpaEntity> findAllByAuthorUsernameAndEnabledTrue(String username);
 }

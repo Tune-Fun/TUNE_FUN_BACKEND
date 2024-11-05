@@ -11,6 +11,7 @@ public record RegisteredAccount(
         String password,
         String email,
         String nickname,
+        String profileImageUrl,
         Set<String> roles,
         List<RegisteredOAuth2Account> oauth2Accounts
 ) implements Account {

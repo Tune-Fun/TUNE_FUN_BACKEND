@@ -29,7 +29,7 @@ public class EmailOtpVerificationStrategy extends BaseOtpVerificationStrategy {
 
     @Override
     public VerifyResult verifyOtp(VerifyOtp verifyOtp) throws Exception {
-        verifyOtpPort.verifyOtp(verifyOtp);
+        verifyOtpPort.verifyOtpAndExpire(verifyOtp);
 
         recordEmailVerifiedAtPort.recordEmailVerifiedAt(verifyOtp.username());
 
